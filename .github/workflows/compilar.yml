@@ -28,7 +28,7 @@ jobs:
           ./compiler/pawncc/gm.pwn -iinclude -o gamemode.amx
 
       - name: Salvar AMX
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Matinha-RP-AMX
           path: gamemode.amx
