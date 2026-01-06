@@ -11,15 +11,21 @@ jobs:
       - name: Baixar repositório
         uses: actions/checkout@v3
 
-      - name: Baixar compilador Pawn pré-compilado
+      - name: Instalar dependências
         run: |
-          wget https://github.com/pawn-lang/compiler/releases/download/v3.3.356/pawnc-3.3.356-linux.tar.gz -O pawn.tar.gz
-          tar -xzf pawn.tar.gz
-          chmod +x pawncc/pawncc
+          sudo apt update
+          sudo apt install -y git build-essential
+
+      - name: Clonar e compilar Pawn Compiler
+        run: |
+          git clone https://github.com/pawn-lang/compiler.git
+          cd compiler
+          make
+          cd ..
 
       - name: Compilar GM
         run: |
-          ./pawncc/pawncc gm.pwn -iinclude -o gamemode.amx
+          ./compiler/pawncc/gm.pwn -iinclude -o gamemode.amx
 
       - name: Salvar AMX
         uses: actions/upload-artifact@v4
