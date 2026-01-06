@@ -2,9 +2,6 @@ name: Compilar Matinha RP
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 jobs:
   build:
@@ -14,18 +11,15 @@ jobs:
       - name: Baixar repositório
         uses: actions/checkout@v3
 
-      - name: Instalar compilador Pawn
+      - name: Baixar compilador Pawn pré-compilado
         run: |
-          sudo apt update
-          sudo apt install -y git make gcc
-          git clone https://github.com/pawn-lang/compiler.git
-          cd compiler
-          make
+          wget https://github.com/pawn-lang/compiler/releases/download/v3.3.356/pawnc-3.3.356-linux.tar.gz -O pawn.tar.gz
+          tar -xzf pawn.tar.gz
+          chmod +x pawncc/pawncc
 
       - name: Compilar GM
         run: |
-          cd ..
-          ./compiler/pawncc/gm.pwn -iinclude -o gamemode.amx
+          ./pawncc/pawncc gm.pwn -iinclude -o gamemode.amx
 
       - name: Salvar AMX
         uses: actions/upload-artifact@v4
