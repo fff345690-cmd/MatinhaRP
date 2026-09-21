@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Meu IPTV</title>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #06090f;
+            --bg-panel: #0d1420;
+            --bg-card: #131c2b;
+            --bg-card-hover: #1a2638;
+            --primary: #2196f3;
+            --primary-hover: #42a5f5;
+            --primary-soft: rgba(33,150,243,.12);
+            --primary-border: rgba(33,150,243,.5);
+            --focus-glow: 0 0 0 3px rgba(33,150,243,.35), 0 0 20px rgba(33,150,243,.5);
+            --live: #ff3b30;
+            --soon: #ffb020;
+            --text: #ffffff;
+            --muted: #8b96a5;
+            --border: rgba(255,255,255,.08);
+            --sidebar-width: 360px;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        /* ============ LAYOUT ============ */
+
+        .app {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        /* ============ SIDEBAR ============ */
+
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .sidebar-header {
+            padding: 14px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .logo-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: var(--primary);
+            color: #06121f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            box-shadow: 0 0 20px rgba(33,150,243,.35);
+        }
+
+        .logo span { color: var(--primary); }
+
+        /* ABAS */
+
+        .tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .tab {
+            flex: 1;
+            border: 1px solid var(--border);
+            background: #151e2c;
+            color: #c0cad6;
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: .2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .tab:hover { background: var(--bg-card-hover); }
+
+        .tab.active {
+            background: var(--primary);
+            color: #06121f;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(33,150,243,.35);
+        }
+
+        .tab.tv-focus {
+            box-shadow: var(--focus-glow);
+            border-color: var(--primary);
+        }
+
+        .tab .badge-live {
+            width: 7px;
+            height: 7px;
+            background: var(--live);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--live);
+            animation: pulse 1.5s infinite;
+        }
+
+        .tab.active .badge-live {
+            background: #06121f;
+            box-shadow: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .4; }
+        }
+
+        /* BUSCA */
+
+        .search-box {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 40px;
+            padding: 0 60px 0 38px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            background: #151e2c;
+            color: white;
+            font-size: 14px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-soft);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        .search-shortcut {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: var(--muted);
+            background: #232d3d;
+            border: 1px solid var(--border);
+            padding: 3px 7px;
+            border-radius: 5px;
+            font-weight: bold;
+            letter-spacing: .5px;
+            pointer-events: none;
+            transition: opacity .2s;
+        }
+
+        .search-box input:focus + .search-shortcut { opacity: 0; }
+
+        /* FILTROS */
+
+        .filters {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+
+        .filters::-webkit-scrollbar { display: none; }
+
+        .filter {
+            flex-shrink: 0;
+            border: 1px solid var(--border);
+            background: #151e2c;
+            color: #c0cad6;
+            padding: 5px 11px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            transition: .2s;
+            white-space: nowrap;
+        }
+
+        .filter:hover,
+        .filter.active {
+            background: var(--primary);
+            color: #06121f;
+            border-color: var(--primary);
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(33,150,243,.4);
+        }
+
+        .filter.tv-focus {
+            box-shadow: var(--focus-glow);
+            border-color: var(--primary);
+        }
+
+        /* LISTA */
+
+        .channel-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px;
+            scrollbar-width: thin;
+            scrollbar-color: #2a3648 transparent;
+        }
+
+        .channel-list::-webkit-scrollbar { width: 8px; }
+        .channel-list::-webkit-scrollbar-track { background: transparent; }
+        .channel-list::-webkit-scrollbar-thumb {
+            background: #2a3648;
+            border-radius: 4px;
+        }
+        .channel-list::-webkit-scrollbar-thumb:hover { background: #3a4658; }
+
+        /* CANAL ITEM */
+
+        .channel-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .15s;
+            border: 2px solid transparent;
+            margin-bottom: 4px;
+            position: relative;
+        }
+
+        .channel-item:hover { background: var(--bg-card-hover); }
+
+        .channel-item.active {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            box-shadow: 0 0 12px rgba(33,150,243,.25);
+        }
+
+        /* Foco de TV (controle remoto) */
+        .channel-item.tv-focus {
+            background: rgba(33,150,243,.18);
+            border-color: var(--primary);
+            box-shadow: var(--focus-glow);
+            transform: scale(1.02);
+            z-index: 2;
+        }
+
+        .channel-item.tv-focus::before {
+            content: "▶";
+            position: absolute;
+            left: -2px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .channel-item.active .channel-item-name { color: var(--primary); }
+
+        .channel-item-logo {
+            width: 54px;
+            height: 40px;
+            flex-shrink: 0;
+            background: #0a121f;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            overflow: hidden;
+        }
+
+        .channel-item-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .channel-item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .channel-item-name {
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .channel-item-category {
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-top: 2px;
+        }
+
+        /* EPG */
+
+        .channel-item-epg {
+            font-size: 11px;
+            color: #c8d2df;
+            margin-top: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .channel-item-epg::before {
+            content: "🕐";
+            font-size: 10px;
+            opacity: .7;
+        }
+
+        .channel-item-epg strong { color: var(--primary); }
+
+        .channel-item-progress {
+            height: 3px;
+            background: #232d3d;
+            border-radius: 2px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .channel-item-progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--primary-hover));
+            border-radius: 2px;
+            transition: width 1s linear;
+            box-shadow: 0 0 6px rgba(33,150,243,.6);
+        }
+
+        .channel-item-fav {
+            font-size: 14px;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+
+        .channel-item-fav.active { color: #ffd700; }
+
+        /* EVENTO ITEM */
+
+        .evento {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .15s;
+            border: 2px solid transparent;
+            margin-bottom: 6px;
+            background: var(--bg-card);
+            position: relative;
+        }
+
+        .evento:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary-border);
+        }
+
+        .evento.ativo {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            box-shadow: 0 0 12px rgba(33,150,243,.25);
+        }
+
+        .evento.tv-focus {
+            background: rgba(33,150,243,.18);
+            border-color: var(--primary);
+            box-shadow: var(--focus-glow);
+            transform: scale(1.02);
+            z-index: 2;
+        }
+
+        .evento.tv-focus::before {
+            content: "▶";
+            position: absolute;
+            left: -2px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .evento-info { flex: 1; min-width: 0; }
+
+        .evento-titulo {
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 1.3;
+            margin-bottom: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .evento-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .evento-status-pill {
+            font-size: 9px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            letter-spacing: .3px;
+        }
+
+        .evento-status-pill.ao-vivo {
+            background: var(--live);
+            color: white;
+        }
+
+        .evento-status-pill.em-breve {
+            background: var(--soon);
+            color: #06121f;
+        }
+
+        .evento-status-pill.encerrado {
+            background: #333;
+            color: #888;
+        }
+
+        .evento-players {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+
+        .player-pill {
+            font-size: 9px;
+            font-weight: bold;
+            background: #232d3d;
+            color: var(--primary);
+            padding: 2px 5px;
+            border-radius: 3px;
+            text-transform: uppercase;
+        }
+
+        .evento-liga-logo {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+            flex-shrink: 0;
+            background: #0a121f;
+            border-radius: 4px;
+            padding: 2px;
+        }
+
+        /* ============ PLAYER ============ */
+
+        .player-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #000;
+            position: relative;
+            min-width: 0;
+            height: 100vh;
+        }
+
+        .player-header {
+            height: 60px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 18px;
+            background: #0d1420;
+            border-bottom: 1px solid var(--border);
+            transition: opacity .3s;
+        }
+
+        .player-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .player-title img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            flex-shrink: 0;
+            border-radius: 6px;
+            background: #0a121f;
+            padding: 3px;
+        }
+
+        .player-title-text { min-width: 0; }
+
+        .player-title-name {
+            font-size: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-title-info {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-title-info strong {
+            color: var(--primary);
+        }
+
+        .player-actions {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .player-btn {
+            height: 38px;
+            min-width: 38px;
+            padding: 0 12px;
+            border: none;
+            border-radius: 9px;
+            background: #1a2638;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: .2s;
+            position: relative;
+        }
+
+        .player-btn:hover {
+            background: var(--primary);
+            color: #06121f;
+            box-shadow: 0 0 15px rgba(33,150,243,.4);
+        }
+
+        .player-btn.tv-focus {
+            background: var(--primary);
+            color: #06121f;
+            box-shadow: var(--focus-glow);
+            transform: scale(1.05);
+        }
+
+        .player-btn:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .player-container {
+            flex: 1;
+            min-height: 0;
+            position: relative;
+            background: black;
+        }
+
+        .player-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* NAV ZONES */
+
+        .nav-zone {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 70px;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        .nav-zone.left {
+            left: 0;
+            background: linear-gradient(to right, rgba(0,0,0,.8), transparent);
+        }
+
+        .nav-zone.right {
+            right: 0;
+            background: linear-gradient(to left, rgba(0,0,0,.8), transparent);
+        }
+
+        .nav-zone:hover { opacity: 1; }
+
+        .nav-arrow {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(33,150,243,.95);
+            color: #06121f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 4px 20px rgba(33,150,243,.4);
+        }
+
+        /* PLAYER ZONE (foco do controle no player) */
+
+        .player-container.tv-focus {
+            outline: 3px solid var(--primary);
+            outline-offset: -3px;
+            box-shadow: inset 0 0 40px rgba(33,150,243,.3);
+        }
+
+        /* PLACEHOLDER */
+
+        .player-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            gap: 12px;
+            background: #000;
+            z-index: 3;
+        }
+
+        .player-placeholder .icon {
+            font-size: 60px;
+            opacity: .3;
+            color: var(--primary);
+        }
+
+        .player-placeholder.hidden { display: none; }
+
+        /* FULLSCREEN */
+
+        .player-area:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+        }
+
+        .player-area:fullscreen .player-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 30;
+            background: rgba(13,20,32,.85);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .player-area:fullscreen .player-header.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .player-area:-webkit-full-screen {
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+        }
+
+        .player-area:-webkit-full-screen .player-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 30;
+            background: rgba(13,20,32,.85);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .player-area:-webkit-full-screen .player-header.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .fullscreen-exit {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 40;
+            width: 46px;
+            height: 46px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(0,0,0,.7);
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: .2s;
+            backdrop-filter: blur(8px);
+        }
+
+        .fullscreen-exit:hover { background: #e53935; }
+        .fullscreen-exit.show { display: flex; }
+
+        .player-area:fullscreen .nav-zone,
+        .player-area:-webkit-full-screen .nav-zone { width: 100px; }
+
+        .player-area:fullscreen .nav-arrow,
+        .player-area:-webkit-full-screen .nav-arrow {
+            width: 60px;
+            height: 60px;
+            font-size: 28px;
+        }
+
+        /* LOADING / EMPTY */
+
+        .loading {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .loading .spinner {
+            width: 26px;
+            height: 26px;
+            margin: 0 auto 10px;
+            border: 3px solid #232d3d;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+            display: none;
+            font-size: 13px;
+        }
+
+        /* TOAST */
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1a2638;
+            border: 1px solid var(--primary-border);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            z-index: 3000;
+            transition: .3s;
+            pointer-events: none;
+            box-shadow: 0 0 25px rgba(33,150,243,.3);
+        }
+
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* OSD (On-Screen Display - para controle remoto) */
+
+        .osd {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 4000;
+            background: rgba(13,20,32,.95);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--primary);
+            box-shadow: 0 0 30px rgba(33,150,243,.5);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity .3s, transform .3s;
+            pointer-events: none;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .osd.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .osd small {
+            display: block;
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: normal;
+            margin-top: 4px;
+        }
+
+        /* INDICADOR DE ZONA */
+
+        .zone-indicator {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 4000;
+            background: rgba(13,20,32,.95);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 12px;
+            color: var(--muted);
+            opacity: 0;
+            transition: opacity .3s;
+            pointer-events: none;
+        }
+
+        .zone-indicator.show {
+            opacity: 1;
+        }
+
+        .zone-indicator strong {
+            color: var(--primary);
+        }
+
+        /* RESPONSIVO */
+
+        @media (max-width: 800px) {
+            html, body { overflow: auto; }
+
+            .app {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 50vh;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                order: 2;
+            }
+
+            .player-area {
+                height: 55vh;
+                order: 1;
+            }
+
+            .sidebar-header { padding: 12px; }
+            .logo { font-size: 16px; margin-bottom: 10px; }
+            .channel-item-logo { width: 46px; height: 34px; }
+            .channel-item-name { font-size: 12px; }
+
+            .player-header { height: 52px; padding: 0 12px; }
+            .player-title img { width: 30px; height: 30px; }
+            .player-title-name { font-size: 13px; }
+
+            .player-btn {
+                height: 34px;
+                min-width: 34px;
+                padding: 0 8px;
+                font-size: 12px;
+            }
+
+            .player-btn span { display: none; }
+            .nav-zone { width: 50px; }
+            .nav-arrow { width: 38px; height: 38px; font-size: 18px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="logo">
+                <div class="logo-icon">▶</div>
+                <div>Meu <span>IPTV</span></div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active tv-tab" id="tabEventos" data-tab="eventos">
+                    <span class="badge-live"></span> Ao Vivo
+                </button>
+                <button class="tab tv-tab" id="tabCanais" data-tab="canais">
+                    📺 Canais
+                </button>
+            </div>
+
+            <div class="search-box">
+                <div class="search-icon">⌕</div>
+                <input type="search" id="search" placeholder="Buscar..." autocomplete="off">
+                <span class="search-shortcut">TECLA T</span>
+            </div>
+
+            <div class="filters" id="filtrosCanais" style="display:none;">
+                <button class="filter active tv-filter" data-filter="todos">Todos</button>
+                <button class="filter tv-filter" data-filter="favoritos">★ Favoritos</button>
+                <button class="filter tv-filter" data-filter="esportes">Esportes</button>
+                <button class="filter tv-filter" data-filter="abertos">TV Aberta</button>
+                <button class="filter tv-filter" data-filter="variedades">Variedades</button>
+                <button class="filter tv-filter" data-filter="eventos">Eventos</button>
+                <button class="filter tv-filter" data-filter="portugal">Portugal</button>
+            </div>
+
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            Carregando...
+        </div>
+
+        <div id="channelList" class="channel-list"></div>
+
+        <div id="empty" class="empty">
+            📺 Nenhum item encontrado
+        </div>
+
+    </aside>
+
+
+    <section class="player-area" id="playerArea">
+
+        <div class="player-header" id="playerHeader">
+
+            <div class="player-title">
+                <img id="playerLogo" src="" alt="">
+                <div class="player-title-text">
+                    <div class="player-title-name" id="playerName">
+                        Selecione um canal
+                    </div>
+                    <div class="player-title-info" id="playerIndex">
+                        Nenhum item selecionado
+                    </div>
+                </div>
+            </div>
+
+            <div class="player-actions">
+                <button class="player-btn tv-btn" id="btnPrev" data-btn="prev" title="Anterior (←)">
+                    ⏮ <span>Anterior</span>
+                </button>
+                <button class="player-btn tv-btn" id="btnNext" data-btn="next" title="Próximo (→)">
+                    <span>Próximo</span> ⏭
+                </button>
+                <button class="player-btn tv-btn" id="btnFullscreen" data-btn="fullscreen" title="Tela cheia (F)">
+                    ⛶
+                </button>
+            </div>
+
+        </div>
+
+        <div class="player-container" id="playerContainer">
+
+            <div class="player-placeholder" id="playerPlaceholder">
+                <div class="icon">▶</div>
+                <div>Selecione um canal ou evento</div>
+            </div>
+
+            <iframe id="player" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+
+            <div class="nav-zone left" id="navLeft"><div class="nav-arrow">‹</div></div>
+            <div class="nav-zone right" id="navRight"><div class="nav-arrow">›</div></div>
+
+            <button class="fullscreen-exit" id="btnExitFullscreen" title="Sair (Esc)">✕</button>
+
+        </div>
+
+    </section>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<!-- OSD (feedback de teclas do controle) -->
+<div id="osd" class="osd"></div>
+
+<!-- Indicador de zona ativa -->
+<div id="zoneIndicator" class="zone-indicator">
+    Zona: <strong id="zoneName">—</strong>
+</div>
+
+
+<script>
+
+    /* ============ CONSTANTES ============ */
+
+    const API_EVENTOS = "https://embedtv.lat/api/events";
+    const API_EPG = "https://embedtv.lat/api/epg_all";
+    const BASE_NOSSOPLAYER = "https://nossoplayeronlinehd.ink/tv";
+
+
+    /* ============ ESTADO ============ */
+
+    let canais = [];
+    let eventos = [];
+    let epgPorCanal = {};
+
+    let abaAtual = "eventos";
+    let filtroAtual = "todos";
+
+    let listaAtual = [];
+    let canalAtualIndex = -1;
+    let itemAtual = null;
+
+    /* ============ ESTADO DO CONTROLE REMOTO ============ */
+
+    // Zonas: "tabs" | "search" | "filters" | "list" | "actions" | "player"
+    let zonaAtual = "list";
+    let zonaAnterior = "list";   // para restaurar ao voltar
+    let tabIndex = 0;            // 0 = eventos, 1 = canais
+    let filtroIndex = 0;
+    let actionIndex = 0;         // 0 = prev, 1 = next, 2 = fullscreen
+
+    const acoes = ["prev", "next", "fullscreen"];
+
+
+    /* ============ ELEMENTOS ============ */
+
+    const channelList = document.getElementById("channelList");
+    const loading = document.getElementById("loading");
+    const empty = document.getElementById("empty");
+    const search = document.getElementById("search");
+
+    const playerArea = document.getElementById("playerArea");
+    const playerHeader = document.getElementById("playerHeader");
+    const player = document.getElementById("player");
+    const playerName = document.getElementById("playerName");
+    const playerLogo = document.getElementById("playerLogo");
+    const playerIndex = document.getElementById("playerIndex");
+    const playerPlaceholder = document.getElementById("playerPlaceholder");
+    const playerContainer = document.getElementById("playerContainer");
+
+    const btnExitFullscreen = document.getElementById("btnExitFullscreen");
+
+    const tabEventos = document.getElementById("tabEventos");
+    const tabCanais = document.getElementById("tabCanais");
+    const filtrosCanais = document.getElementById("filtrosCanais");
+
+    const osd = document.getElementById("osd");
+    const zoneIndicator = document.getElementById("zoneIndicator");
+    const zoneName = document.getElementById("zoneName");
+
+
+    /* ============ CARREGAR ============ */
+
+    async function carregarTudo() {
+        await Promise.all([
+            carregarCanais(),
+            carregarEventos(),
+            carregarEPG()
+        ]);
+
+        loading.style.display = "none";
+        renderizar();
+        atualizarZonaUI();
+    }
+
+
+    async function carregarCanais() {
+        try {
+            const r = await fetch("canais.json");
+            if (!r.ok) throw new Error("canais.json");
+            const d = await r.json();
+            if (Array.isArray(d)) canais = d;
+        } catch (e) { console.error("Erro canais:", e); }
+    }
+
+
+    async function carregarEventos() {
+        try {
+            const r = await fetch(API_EVENTOS);
+            if (!r.ok) throw new Error("API eventos");
+            const d = await r.json();
+            if (Array.isArray(d)) eventos = d;
+        } catch (e) { console.error("Erro eventos:", e); }
+    }
+
+
+    async function carregarEPG() {
+        try {
+            const r = await fetch(API_EPG);
+            if (!r.ok) throw new Error("API EPG");
+            const d = await r.json();
+
+            epgPorCanal = {};
+            d.forEach(bloco => {
+                epgPorCanal[bloco.id] = bloco.data || [];
+            });
+        } catch (e) { console.error("Erro EPG:", e); }
+    }
+
+
+    /* ============ UTILITÁRIOS ============ */
+
+    function extrairSlug(url) {
+        return String(url).split("/").filter(Boolean).pop();
+    }
+
+    function urlNossoplayer(slug) {
+        return `${BASE_NOSSOPLAYER}/${slug}`;
+    }
+
+    function slugDoCanal(canal) {
+        return extrairSlug(canal.player);
+    }
+
+    function statusEvento(evento) {
+        const agora = Date.now();
+        const inicio = new Date(evento.time_start).getTime();
+        const fim = new Date(evento.time_end).getTime();
+
+        if (agora >= inicio && agora <= fim) return "ao-vivo";
+        if (agora < inicio) return "em-breve";
+        return "encerrado";
+    }
+
+    function formatarHora(ms) {
+        const d = new Date(ms);
+        return d.toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+    }
+
+    function categoria(canal) {
+        return canal.categoria || "outros";
+    }
+
+    function escaparHTML(t) {
+        return String(t ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /* ============ EPG ============ */
+
+    function programaAtual(lista) {
+        if (!lista || !lista.length) return null;
+
+        const agora = Date.now();
+
+        const ordenada = lista
+            .map(p => ({
+                ...p,
+                inicio: new Date(p.start_date).getTime()
+            }))
+            .sort((a, b) => a.inicio - b.inicio);
+
+        let atual = null;
+        let proximo = null;
+
+        for (let i = 0; i < ordenada.length; i++) {
+            if (ordenada[i].inicio <= agora) {
+                atual = ordenada[i];
+                proximo = ordenada[i + 1] || null;
+            } else {
+                break;
+            }
+        }
+
+        if (!atual) {
+            atual = ordenada[0];
+            proximo = ordenada[1] || null;
+        }
+
+        const fim = proximo
+            ? proximo.inicio
+            : atual.inicio + 60 * 60 * 1000;
+
+        const total = fim - atual.inicio;
+        const decorrido = Math.max(0, agora - atual.inicio);
+        const progresso = total > 0
+            ? Math.min(1, decorrido / total)
+            : 0;
+
+        return { atual, proximo, inicio: atual.inicio, fim, progresso };
+    }
+
+
+    function epgDoCanal(canal) {
+        const slug = slugDoCanal(canal);
+        return programaAtual(epgPorCanal[slug]);
+    }
+
+
+    /* ============ FAVORITOS ============ */
+
+    function getFavoritos() {
+        try {
+            return JSON.parse(localStorage.getItem("iptv_favoritos")) || [];
+        } catch { return []; }
+    }
+
+    function isFavorito(canal) {
+        return getFavoritos().includes(canal.player);
+    }
+
+    function alternarFavorito(event, canal) {
+        if (event) event.stopPropagation();
+
+        let favs = getFavoritos();
+
+        if (favs.includes(canal.player)) {
+            favs = favs.filter(u => u !== canal.player);
+            mostrarToast("Removido dos favoritos");
+        } else {
+            favs.push(canal.player);
+            mostrarToast("Adicionado aos favoritos");
+        }
+
+        localStorage.setItem("iptv_favoritos", JSON.stringify(favs));
+        renderizar();
+    }
+
+
+    /* ============ RENDERIZAR ============ */
+
+    function renderizar() {
+
+        channelList.innerHTML = "";
+
+        if (abaAtual === "eventos") {
+            filtrosCanais.style.display = "none";
+            renderizarEventos();
+        } else {
+            filtrosCanais.style.display = "flex";
+            renderizarCanais();
+        }
+
+        aplicarFocoTV();
+    }
+
+
+    /* ============ EVENTOS ============ */
+
+    function renderizarEventos() {
+
+        const termo = search.value.toLowerCase().trim();
+
+        let lista = eventos.filter(e => {
+            if (!termo) return true;
+            const alvo = [
+                e.title || "",
+                e.league?.name || "",
+                e.teams?.home?.name || "",
+                e.teams?.away?.name || ""
+            ].join(" ").toLowerCase();
+            return alvo.includes(termo);
+        });
+
+        const ordem = { "ao-vivo": 0, "em-breve": 1, "encerrado": 2 };
+        lista.sort((a, b) => {
+            const sa = ordem[statusEvento(a)];
+            const sb = ordem[statusEvento(b)];
+            if (sa !== sb) return sa - sb;
+            return new Date(a.time_start) - new Date(b.time_start);
+        });
+
+        listaAtual = lista;
+
+        if (lista.length === 0) {
+            empty.style.display = "block";
+            empty.textContent = "📭 Nenhum evento encontrado";
+            return;
+        }
+
+        empty.style.display = "none";
+
+        lista.forEach((evento, index) => {
+
+            const status = statusEvento(evento);
+
+            const item = document.createElement("div");
+            item.className = "evento";
+            item.dataset.index = index;
+
+            if (itemAtual && itemAtual._tipo === "evento" && itemAtual.id === evento.id) {
+                item.classList.add("ativo");
+            }
+
+            const badgeTexto = {
+                "ao-vivo": "AO VIVO",
+                "em-breve": "EM BREVE",
+                "encerrado": "FIM"
+            }[status];
+
+            const playersHTML = evento.players
+                .map(p => `<span class="player-pill">${extrairSlug(p)}</span>`)
+                .join("");
+
+            item.innerHTML = `
+                ${evento.league?.image
+                    ? `<img class="evento-liga-logo" src="${evento.league.image}" alt="">`
+                    : ""}
+
+                <div class="evento-info">
+                    <div class="evento-titulo">
+                        ${escaparHTML(evento.teams.home.name)} x ${escaparHTML(evento.teams.away.name)}
+                    </div>
+                    <div class="evento-meta">
+                        <span class="evento-status-pill ${status}">${badgeTexto}</span>
+                        <span>🕐 ${formatarHora(new Date(evento.time_start).getTime())}</span>
+                    </div>
+                    <div class="evento-players">${playersHTML}</div>
+                </div>
+            `;
+
+            item.addEventListener("click", () => {
+                canalAtualIndex = index;
+                abrirEvento(evento);
+                renderizar();
+            });
+
+            channelList.appendChild(item);
+        });
+    }
+
+
+    /* ============ CANAIS ============ */
+
+    function renderizarCanais() {
+
+        const termo = search.value.toLowerCase().trim();
+
+        const resultado = canais.filter(canal => {
+
+            const okBusca = canal.nome.toLowerCase().includes(termo);
+            let okFiltro = true;
+
+            if (filtroAtual === "favoritos") {
+                okFiltro = isFavorito(canal);
+            } else if (filtroAtual !== "todos") {
+                okFiltro = categoria(canal) === filtroAtual;
+            }
+
+            return okBusca && okFiltro;
+        });
+
+        listaAtual = resultado;
+
+        if (resultado.length === 0) {
+            empty.style.display = "block";
+            empty.textContent = "📺 Nenhum canal encontrado";
+            return;
+        }
+
+        empty.style.display = "none";
+
+        resultado.forEach((canal, index) => {
+
+            const item = document.createElement("div");
+            item.className = "channel-item";
+            item.dataset.index = index;
+
+            if (itemAtual && itemAtual._tipo === "canal" && itemAtual.player === canal.player) {
+                item.classList.add("active");
+            }
+
+            const fav = isFavorito(canal);
+            const epg = epgDoCanal(canal);
+
+            let epgHTML = "";
+            if (epg) {
+                const pct = (epg.progresso * 100).toFixed(0);
+                epgHTML = `
+                    <div class="channel-item-epg">
+                        <strong>${escaparHTML(epg.atual.title)}</strong>
+                    </div>
+                    <div class="channel-item-progress">
+                        <div class="channel-item-progress-bar" style="width: ${pct}%"></div>
+                    </div>
+                `;
+            }
+
+            item.innerHTML = `
+                <div class="channel-item-logo">
+                    <img
+                        src="${canal.imagem}"
+                        alt=""
+                        loading="lazy"
+                        onerror="this.src='https://via.placeholder.com/80x60/0a121f/2196f3?text=TV'"
+                    >
+                </div>
+                <div class="channel-item-info">
+                    <div class="channel-item-name">${escaparHTML(canal.nome)}</div>
+                    <div class="channel-item-category">${categoria(canal)}</div>
+                    ${epgHTML}
+                </div>
+                <div class="channel-item-fav ${fav ? "active" : ""}">
+                    ${fav ? "★" : "☆"}
+                </div>
+            `;
+
+            item.addEventListener("click", () => {
+                canalAtualIndex = index;
+                abrirCanal(canal);
+                renderizar();
+            });
+
+            const favEl = item.querySelector(".channel-item-fav");
+            favEl.addEventListener("click", e => alternarFavorito(e, canal));
+
+            channelList.appendChild(item);
+        });
+    }
+
+
+    /* ============ ABRIR PLAYER ============ */
+
+    function abrirCanal(canal) {
+
+        itemAtual = { ...canal, _tipo: "canal" };
+
+        playerPlaceholder.classList.add("hidden");
+
+        playerName.textContent = canal.nome;
+        playerLogo.src = canal.imagem;
+        playerLogo.style.display = "";
+        playerLogo.onerror = function() {
+            this.src = "https://via.placeholder.com/36/0a121f/2196f3?text=TV";
+        };
+
+        player.src = canal.player;
+
+        atualizarIndice();
+        scrollToAtivo();
+    }
+
+
+    function abrirEvento(evento) {
+
+        const slug = extrairSlug(evento.players[0]);
+
+        itemAtual = { ...evento, _tipo: "evento" };
+
+        playerPlaceholder.classList.add("hidden");
+
+        playerName.textContent =
+            `${evento.teams.home.name} x ${evento.teams.away.name}`;
+
+        playerLogo.src = evento.league?.image || "";
+        playerLogo.onerror = function() {
+            this.style.display = "none";
+        };
+        playerLogo.style.display = "";
+
+        player.src = urlNossoplayer(slug);
+
+        atualizarIndice();
+        scrollToAtivo();
+        mostrarToast(evento.title);
+    }
+
+
+    function atualizarIndice() {
+
+        if (!listaAtual.length || canalAtualIndex < 0) {
+            playerIndex.textContent = "Nenhum item selecionado";
+            return;
+        }
+
+        const pos = canalAtualIndex + 1;
+        const total = listaAtual.length;
+
+        if (itemAtual && itemAtual._tipo === "evento") {
+            const status = statusEvento(itemAtual);
+            const labels = {
+                "ao-vivo": "🔴 AO VIVO",
+                "em-breve": "⏰ EM BREVE",
+                "encerrado": "⚫ ENCERRADO"
+            };
+            playerIndex.textContent = `${pos} / ${total} • ${labels[status]}`;
+
+        } else if (itemAtual && itemAtual._tipo === "canal") {
+
+            const epg = epgDoCanal(itemAtual);
+
+            if (epg) {
+                playerIndex.innerHTML = `
+                    🕐 <strong>${escaparHTML(epg.atual.title)}</strong>
+                    • ${formatarHora(epg.inicio)} - ${formatarHora(epg.fim)}
+                `;
+            } else {
+                playerIndex.textContent = `${pos} / ${total} • ${categoria(itemAtual)}`;
+            }
+
+        } else {
+            playerIndex.textContent = `${pos} / ${total}`;
+        }
+    }
+
+
+    function scrollToAtivo() {
+        setTimeout(() => {
+            const el = channelList.querySelector(".tv-focus") ||
+                       channelList.querySelector(".ativo") ||
+                       channelList.querySelector(".active");
+            if (el) el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        }, 50);
+    }
+
+
+    /* ============ NAVEGAÇÃO ============ */
+
+    function proximoItem() {
+        if (!listaAtual.length) return;
+        canalAtualIndex++;
+        if (canalAtualIndex >= listaAtual.length) canalAtualIndex = 0;
+        carregarIndex(canalAtualIndex);
+    }
+
+    function itemAnterior() {
+        if (!listaAtual.length) return;
+        canalAtualIndex--;
+        if (canalAtualIndex < 0) canalAtualIndex = listaAtual.length - 1;
+        carregarIndex(canalAtualIndex);
+    }
+
+    function carregarIndex(index) {
+        const item = listaAtual[index];
+        if (!item) return;
+
+        if (abaAtual === "eventos") {
+            abrirEvento(item);
+        } else {
+            abrirCanal(item);
+        }
+
+        renderizar();
+        mostrarToast(
+            abaAtual === "eventos"
+                ? `${item.teams.home.name} x ${item.teams.away.name}`
+                : item.nome
+        );
+    }
+
+
+    /* ============ FULLSCREEN ============ */
+
+    function isFullscreen() {
+        return document.fullscreenElement === playerArea;
+    }
+
+    function entrarFullscreen() {
+        if (playerArea.requestFullscreen) playerArea.requestFullscreen();
+        else if (playerArea.webkitRequestFullscreen) playerArea.webkitRequestFullscreen();
+    }
+
+    function sairFullscreen() {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
+
+    function toggleFullscreen() {
+        isFullscreen() ? sairFullscreen() : entrarFullscreen();
+    }
+
+    function onFullscreenChange() {
+        if (isFullscreen()) {
+            btnExitFullscreen.classList.add("show");
+            mostrarHeader();
+        } else {
+            btnExitFullscreen.classList.remove("show");
+            playerHeader.classList.remove("visible");
+        }
+    }
+
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+
+    let headerTimeout;
+    function mostrarHeader() {
+        playerHeader.classList.add("visible");
+        clearTimeout(headerTimeout);
+        headerTimeout = setTimeout(() => {
+            if (isFullscreen()) playerHeader.classList.remove("visible");
+        }, 3000);
+    }
+
+    document.addEventListener("mousemove", () => {
+        if (isFullscreen()) mostrarHeader();
+    });
+
+    playerContainer.addEventListener("dblclick", e => {
+        if (e.target.closest(".nav-zone") || e.target.closest(".fullscreen-exit")) return;
+        toggleFullscreen();
+    });
+
+
+    /* ============================================================ */
+    /* ============ SISTEMA DE CONTROLE REMOTO ==================== */
+    /* ============================================================ */
+
+    /* OSD (feedback visual) */
+
+    let osdTimeout;
+
+    function mostrarOSD(texto, subtexto = "") {
+        osd.innerHTML = subtexto
+            ? `${texto}<small>${subtexto}</small>`
+            : texto;
+        osd.classList.add("show");
+
+        clearTimeout(osdTimeout);
+        osdTimeout = setTimeout(() => {
+            osd.classList.remove("show");
+        }, 1500);
+    }
+
+
+    /* Indicador de zona */
+
+    let zoneTimeout;
+
+    function atualizarZonaUI() {
+
+        const labels = {
+            "tabs": "📑 Abas",
+            "search": "🔍 Busca",
+            "filters": "🏷️ Filtros",
+            "list": "📺 Lista",
+            "actions": "🎛️ Botões do player",
+            "player": "▶️ Player"
+        };
+
+        zoneName.textContent = labels[zonaAtual] || zonaAtual;
+        zoneIndicator.classList.add("show");
+
+        clearTimeout(zoneTimeout);
+        zoneTimeout = setTimeout(() => {
+            zoneIndicator.classList.remove("show");
+        }, 2000);
+    }
+
+
+    /* Aplica foco visual (classe .tv-focus) nos elementos */
+
+    function aplicarFocoTV() {
+
+        // Limpa todos os focos
+        document.querySelectorAll(".tv-focus")
+            .forEach(el => el.classList.remove("tv-focus"));
+
+        // Tabs
+        if (zonaAtual === "tabs") {
+            const tabs = document.querySelectorAll(".tv-tab");
+            if (tabs[tabIndex]) tabs[tabIndex].classList.add("tv-focus");
+        }
+
+        // Filtros
+        else if (zonaAtual === "filters") {
+            const filts = document.querySelectorAll(".tv-filter");
+            if (filts[filtroIndex]) filts[filtroIndex].classList.add("tv-focus");
+        }
+
+        // Lista (canais / eventos)
+        else if (zonaAtual === "list") {
+            const itens = channelList.querySelectorAll(".channel-item, .evento");
+            if (canalAtualIndex >= 0 && itens[canalAtualIndex]) {
+                itens[canalAtualIndex].classList.add("tv-focus");
+                itens[canalAtualIndex].scrollIntoView({
+                    block: "nearest",
+                    behavior: "smooth"
+                });
+            } else if (itens.length > 0) {
+                // Sem seleção ainda → foca no primeiro
+                itens[0].classList.add("tv-focus");
+                canalAtualIndex = 0;
+            }
+        }
+
+        // Botões do player
+        else if (zonaAtual === "actions") {
+            const btns = document.querySelectorAll(".tv-btn");
+            if (btns[actionIndex]) btns[actionIndex].classList.add("tv-focus");
+        }
+
+        // Player
+        else if (zonaAtual === "player") {
+            playerContainer.classList.add("tv-focus");
+        }
+    }
+
+
+    /* Navegação entre zonas */
+
+    function irParaZona(zona) {
+        zonaAnterior = zonaAtual;
+        zonaAtual = zona;
+        atualizarZonaUI();
+        aplicarFocoTV();
+    }
+
+
+    /* Teclas de navegação */
+
+    function teclaAcima() {
+
+        if (zonaAtual === "list") {
+            // Se já está no topo, sobe para filtros ou tabs
+            if (canalAtualIndex <= 0) {
+                if (abaAtual === "canais") {
+                    irParaZona("filters");
+                } else {
+                    irParaZona("tabs");
+                }
+                return;
+            }
+            canalAtualIndex--;
+            aplicarFocoTV();
+            atualizarOSDLista();
+
+        } else if (zonaAtual === "filters") {
+            if (filtroIndex <= 0) {
+                irParaZona("tabs");
+                return;
+            }
+            filtroIndex--;
+            aplicarFocoTV();
+
+        } else if (zonaAtual === "tabs") {
+            // Já está no topo, nada acima
+            mostrarOSD("Topo");
+
+        } else if (zonaAtual === "actions") {
+            irParaZona("list");
+
+        } else if (zonaAtual === "player") {
+            irParaZona("list");
+        }
+    }
+
+
+    function teclaAbaixo() {
+
+        if (zonaAtual === "tabs") {
+            // Vai para o primeiro elemento abaixo
+            if (abaAtual === "canais") {
+                irParaZona("filters");
+            } else {
+                irParaZona("list");
+            }
+
+        } else if (zonaAtual === "filters") {
+            irParaZona("list");
+
+        } else if (zonaAtual === "list") {
+            if (canalAtualIndex >= listaAtual.length - 1) {
+                // Fim da lista → vai para botões
+                irParaZona("actions");
+                return;
+            }
+            canalAtualIndex++;
+            aplicarFocoTV();
+            atualizarOSDLista();
+
+        } else if (zonaAtual === "actions") {
+            irParaZona("player");
+        }
+    }
+
+
+    function teclaEsquerda() {
+
+        if (zonaAtual === "tabs") {
+            tabIndex = Math.max(0, tabIndex - 1);
+            aplicarFocoTV();
+
+        } else if (zonaAtual === "filters") {
+            filtroIndex = Math.max(0, filtroIndex - 1);
+            aplicarFocoTV();
+
+        } else if (zonaAtual === "actions") {
+            actionIndex = Math.max(0, actionIndex - 1);
+            aplicarFocoTV();
+
+        } else if (zonaAtual === "list" || zonaAtual === "player") {
+            // Canal anterior
+            itemAnterior();
+        }
+    }
+
+
+    function teclaDireita() {
+
+        if (zonaAtual === "tabs") {
+            tabIndex = Math.min(1, tabIndex + 1);
+            aplicarFocoTV();
+
+        } else if (zonaAtual === "filters") {
+            const total = document.querySelectorAll(".tv-filter").length;
+            filtroIndex = Math.min(total - 1, filtroIndex + 1);
+            aplicarFocoTV();
+
+        } else if (zonaAtual === "actions") {
+            actionIndex = Math.min(acoes.length - 1, actionIndex + 1);
+            aplicarFocoTV();
+
+        } else if (zonaAtual === "list" || zonaAtual === "player") {
+            // Próximo canal
+            proximoItem();
+        }
+    }
+
+
+    function teclaOK() {
+
+        if (zonaAtual === "tabs") {
+            // Muda aba
+            if (tabIndex === 0) {
+                mudarAba("eventos");
+            } else {
+                mudarAba("canais");
+            }
+            mostrarOSD("Aba: " + (tabIndex === 0 ? "Ao Vivo" : "Canais"));
+
+        } else if (zonaAtual === "filters") {
+            const filts = document.querySelectorAll(".tv-filter");
+            if (filts[filtroIndex]) {
+                filts[filtroIndex].click();
+                mostrarOSD("Filtro: " + filts[filtroIndex].textContent.trim());
+            }
+
+        } else if (zonaAtual === "list") {
+            // Abre o item selecionado
+            if (canalAtualIndex >= 0 && listaAtual[canalAtualIndex]) {
+                carregarIndex(canalAtualIndex);
+                // Vai para o player
+                irParaZona("player");
+            }
+
+        } else if (zonaAtual === "actions") {
+            const acao = acoes[actionIndex];
+            if (acao === "prev") itemAnterior();
+            else if (acao === "next") proximoItem();
+            else if (acao === "fullscreen") toggleFullscreen();
+            mostrarOSD("✓ " + acao);
+
+        } else if (zonaAtual === "player") {
+            // OK no player → play/pause no iframe (não dá pra controlar diretamente,
+            // então mostra OSD)
+            mostrarOSD("▶ Player");
+        }
+    }
+
+
+    function teclaVoltar() {
+
+        // Se está em fullscreen → sai
+        if (isFullscreen()) {
+            sairFullscreen();
+            return;
+        }
+
+        // Se está digitando na busca → limpa
+        if (document.activeElement === search) {
+            if (search.value !== "") {
+                search.value = "";
+                renderizar();
+                return;
+            }
+            search.blur();
+            irParaZona("list");
+            return;
+        }
+
+        // Se está em zona diferente da lista → volta pra lista
+        if (zonaAtual !== "list") {
+            irParaZona("list");
+            return;
+        }
+
+        // Se está na lista → volta pra zona de cima
+        if (abaAtual === "canais") {
+            irParaZona("filters");
+        } else {
+            irParaZona("tabs");
+        }
+    }
+
+
+    function mudarAba(aba) {
+        abaAtual = aba;
+
+        if (aba === "eventos") {
+            tabEventos.classList.add("active");
+            tabCanais.classList.remove("active");
+            tabIndex = 0;
+            search.placeholder = "Buscar evento...";
+        } else {
+            tabCanais.classList.add("active");
+            tabEventos.classList.remove("active");
+            tabIndex = 1;
+            search.placeholder = "Buscar canal...";
+        }
+
+        search.value = "";
+        canalAtualIndex = -1;
+        renderizar();
+    }
+
+
+    function atualizarOSDLista() {
+        if (canalAtualIndex < 0 || !listaAtual[canalAtualIndex]) return;
+
+        const item = listaAtual[canalAtualIndex];
+        const nome = abaAtual === "eventos"
+            ? `${item.teams.home.name} x ${item.teams.away.name}`
+            : item.nome;
+
+        mostrarOSD(`${canalAtualIndex + 1} / ${listaAtual.length}`, nome);
+    }
+
+
+    /* Atalho: dígitos 0-9 para pular */
+
+    let digitosBuffer = "";
+    let digitosTimeout;
+
+    function teclaDigito(n) {
+        digitosBuffer += n;
+
+        clearTimeout(digitosTimeout);
+        digitosTimeout = setTimeout(() => {
+            const num = parseInt(digitosBuffer, 10);
+            digitosBuffer = "";
+
+            if (num >= 1 && num <= listaAtual.length) {
+                canalAtualIndex = num - 1;
+                carregarIndex(canalAtualIndex);
+                mostrarOSD(`📺 Canal ${num}`);
+            } else {
+                mostrarOSD("❌ Canal inexistente");
+            }
+        }, 800);
+
+        mostrarOSD(`🔢 ${digitosBuffer}`);
+    }
+
+
+    /* ============ HANDLER DE TECLADO / CONTROLE ============ */
+
+    document.addEventListener("keydown", event => {
+
+        const tagAtiva = document.activeElement.tagName;
+        const isInput = tagAtiva === "INPUT" || tagAtiva === "TEXTAREA";
+        const isButton = tagAtiva === "BUTTON";
+
+        const k = event.key;
+
+        /* --- TECLA T (busca) --- */
+        if ((k === "t" || k === "T") && !isInput) {
+            event.preventDefault();
+            search.focus();
+            search.select();
+            irParaZona("search");
+            mostrarOSD("🔍 Buscar");
+            return;
+        }
+
+        /* --- TECLA F (fullscreen) --- */
+        if ((k === "f" || k === "F") && !isInput) {
+            event.preventDefault();
+            toggleFullscreen();
+            mostrarOSD("⛶ Tela cheia");
+            return;
+        }
+
+        /* --- ESC / BACK --- */
+        if (k === "Escape" || k === "Backspace" || k === "BrowserBack") {
+            event.preventDefault();
+            teclaVoltar();
+            return;
+        }
+
+        /* --- SETAS --- */
+        if (k === "ArrowUp") {
+            event.preventDefault();
+            teclaAcima();
+            return;
+        }
+
+        if (k === "ArrowDown") {
+            event.preventDefault();
+            teclaAbaixo();
+            return;
+        }
+
+        if (k === "ArrowLeft") {
+            event.preventDefault();
+            teclaEsquerda();
+            return;
+        }
+
+        if (k === "ArrowRight") {
+            event.preventDefault();
+            teclaDireita();
+            return;
+        }
+
+        /* --- OK / ENTER --- */
+        if (k === "Enter" || k === " " || k === "OK" || k === "Accept") {
+            if (isInput) return;
+            event.preventDefault();
+            teclaOK();
+            return;
+        }
+
+        /* --- DÍGITOS 0-9 --- */
+        if (/^[0-9]$/.test(k) && !isInput) {
+            event.preventDefault();
+            teclaDigito(k);
+            return;
+        }
+
+        /* --- TECLAS COLORIDAS (alguns controles enviam) --- */
+        if (k === "Red" || k === "ColorF0Red") {
+            event.preventDefault();
+            mostrarOSD("🔴 Vermelho");
+            return;
+        }
+
+        if (k === "Green" || k === "ColorF1Green") {
+            event.preventDefault();
+            // Atalho: abre aba Canais
+            mudarAba("canais");
+            mostrarOSD("🟢 Canais");
+            return;
+        }
+
+        if (k === "Yellow" || k === "ColorF2Yellow") {
+            event.preventDefault();
+            // Atalho: abre aba Ao Vivo
+            mudarAba("eventos");
+            mostrarOSD("🟡 Ao Vivo");
+            return;
+        }
+
+        if (k === "Blue" || k === "ColorF3Blue") {
+            event.preventDefault();
+            mostrarOSD("🔵 Azul");
+            return;
+        }
+
+        /* --- VOLUME / MUTE (se o navegador enviar) --- */
+        if (k === "AudioVolumeUp" || k === "VolumeUp") {
+            event.preventDefault();
+            mostrarOSD("🔊 +");
+            return;
+        }
+
+        if (k === "AudioVolumeDown" || k === "VolumeDown") {
+            event.preventDefault();
+            mostrarOSD("🔉 -");
+            return;
+        }
+
+        if (k === "AudioVolumeMute" || k === "VolumeMute") {
+            event.preventDefault();
+            mostrarOSD("🔇 Mudo");
+            return;
+        }
+
+        /* --- CANAIS +/- --- */
+        if (k === "ChannelUp") {
+            event.preventDefault();
+            itemAnterior();
+            return;
+        }
+
+        if (k === "ChannelDown") {
+            event.preventDefault();
+            proximoItem();
+            return;
+        }
+    });
+
+
+    /* ============ CLIQUE = mouse = teclado ============ */
+
+    // Ao clicar em algo, atualiza a zona
+    tabEventos.addEventListener("click", () => {
+        mudarAba("eventos");
+    });
+
+    tabCanais.addEventListener("click", () => {
+        mudarAba("canais");
+    });
+
+    search.addEventListener("focus", () => {
+        irParaZona("search");
+    });
+
+    search.addEventListener("blur", () => {
+        if (zonaAtual === "search") irParaZona("list");
+    });
+
+
+    document.getElementById("navLeft").addEventListener("click", itemAnterior);
+    document.getElementById("navRight").addEventListener("click", proximoItem);
+    document.getElementById("btnPrev").addEventListener("click", itemAnterior);
+    document.getElementById("btnNext").addEventListener("click", proximoItem);
+    document.getElementById("btnFullscreen").addEventListener("click", toggleFullscreen);
+    btnExitFullscreen.addEventListener("click", sairFullscreen);
+
+
+    /* ============ BUSCA E FILTROS ============ */
+
+    search.addEventListener("input", () => {
+        canalAtualIndex = -1;
+        renderizar();
+    });
+
+    document.querySelectorAll(".filter").forEach((btn, idx) => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".filter")
+                .forEach(b => b.classList.remove("active"));
+
+            btn.classList.add("active");
+            filtroAtual = btn.dataset.filter;
+            filtroIndex = idx;
+            canalAtualIndex = -1;
+            renderizar();
+        });
+    });
+
+
+    /* ============ TOAST ============ */
+
+    let toastTimeout;
+
+    function mostrarToast(msg) {
+        const toast = document.getElementById("toast");
+        toast.textContent = msg;
+        toast.classList.add("show");
+
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove("show");
+        }, 1800);
+    }
+
+
+    /* ============ AUTO-REFRESH ============ */
+
+    setInterval(async () => {
+        await carregarEventos();
+        if (abaAtual === "eventos") renderizar();
+    }, 60000);
+
+    setInterval(async () => {
+        await carregarEPG();
+        if (abaAtual === "canais") renderizar();
+        atualizarIndice();
+    }, 5 * 60 * 1000);
+
+    setInterval(() => {
+        if (abaAtual === "canais") renderizar();
+    }, 30000);
+
+
+    /* ============ INICIAR ============ */
+
+    carregarTudo().then(() => {
+        // Foca no primeiro item
+        if (listaAtual.length) {
+            canalAtualIndex = 0;
+            aplicarFocoTV();
+        }
+    });
+
+</script>
+
+</body>
+</html>
