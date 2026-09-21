@@ -1,0 +1,470 @@
+[
+  {
+    "nome": "Sportv",
+    "imagem": "https://i.imgur.com/BcgnPbz.jpeg",
+    "player": "https://nossoplayeronlinehd.ink/tv/sportv",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Sportv 2",
+    "imagem": "https://i.imgur.com/RJQDMPz.jpeg",
+    "player": "https://nossoplayeronlinehd.ink/tv/sportv2",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Sportv 3",
+    "imagem": "https://i.imgur.com/7VL5xhy.jpeg",
+    "player": "https://nossoplayeronlinehd.ink/tv/sportv3",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "ESPN",
+    "imagem": "https://i.imgur.com/oMiLFVo.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/espn",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "ESPN 2",
+    "imagem": "https://i.imgur.com/oMiLFVo.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/espn2",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "ESPN 3",
+    "imagem": "https://i.imgur.com/oMiLFVo.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/espn3",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "ESPN 4",
+    "imagem": "https://i.imgur.com/oMiLFVo.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/espn4",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "ESPN 5",
+    "imagem": "https://i.imgur.com/oMiLFVo.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/espn5",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "ESPN 6",
+    "imagem": "https://i.imgur.com/oMiLFVo.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/espn6",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Premiere Clubes",
+    "imagem": "https://i.imgur.com/6zRWDjN.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/premiere",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Premiere 2",
+    "imagem": "https://i.imgur.com/6zRWDjN.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/premiere2",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Premiere 3",
+    "imagem": "https://i.imgur.com/6zRWDjN.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/premiere3",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Premiere 4",
+    "imagem": "https://i.imgur.com/6zRWDjN.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/premiere4",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Premiere 5",
+    "imagem": "https://i.imgur.com/6zRWDjN.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/premiere5",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Premiere 6",
+    "imagem": "https://i.imgur.com/6zRWDjN.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/premiere6",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Premiere 7",
+    "imagem": "https://i.imgur.com/6zRWDjN.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/premiere7",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Premiere 8",
+    "imagem": "https://i.imgur.com/6zRWDjN.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/premiere8",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "TNT",
+    "imagem": "https://i.imgur.com/Noxu6zB.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/tnt",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Space",
+    "imagem": "https://i.imgur.com/MWaV1Uy.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/space",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Band Sports",
+    "imagem": "https://i.imgur.com/CxbvJJG.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/bandsports",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Combate",
+    "imagem": "https://i.imgur.com/QSssnYB.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/combate",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "UFC Fight Pass",
+    "imagem": "https://i.imgur.com/Ht3Gy9m.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/ufcfightpass",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Nosso Futebol",
+    "imagem": "https://i.imgur.com/mct37B9.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/nossofutebol",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Cazé TV 1",
+    "imagem": "https://i.imgur.com/1LRBg2T.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/caze1",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Cazé TV 2",
+    "imagem": "https://i.imgur.com/1LRBg2T.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/caze2",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Cazé TV 3",
+    "imagem": "https://i.imgur.com/1LRBg2T.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/caze3",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Cazé TV 4",
+    "imagem": "https://i.imgur.com/1LRBg2T.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/caze4",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Goat",
+    "imagem": "https://i.imgur.com/yf9S9IZ.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/goat1",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Goat 2",
+    "imagem": "https://i.imgur.com/yf9S9IZ.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/goat2",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Goat 3",
+    "imagem": "https://i.imgur.com/yf9S9IZ.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/goat3",
+    "categoria": "esportes"
+  },
+  {
+    "nome": "Globo RJ",
+    "imagem": "https://i.imgur.com/iNqpytt.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/globorj",
+    "categoria": "abertos"
+  },
+  {
+    "nome": "Globo SP",
+    "imagem": "https://i.imgur.com/iNqpytt.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/globosp",
+    "categoria": "abertos"
+  },
+  {
+    "nome": "Globo RS",
+    "imagem": "https://i.imgur.com/iNqpytt.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/globors",
+    "categoria": "abertos"
+  },
+  {
+    "nome": "Globo MG",
+    "imagem": "https://i.imgur.com/iNqpytt.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/globomg",
+    "categoria": "abertos"
+  },
+  {
+    "nome": "SBT",
+    "imagem": "https://i.imgur.com/4OtiAYP.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/sbt",
+    "categoria": "abertos"
+  },
+  {
+    "nome": "Band",
+    "imagem": "https://i.imgur.com/G021JAn.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/band",
+    "categoria": "abertos"
+  },
+  {
+    "nome": "Record",
+    "imagem": "https://i.imgur.com/Mz1g872.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/record",
+    "categoria": "abertos"
+  },
+  {
+    "nome": "Rede TV",
+    "imagem": "https://i.imgur.com/BtfwYU7.jpeg",
+    "player": "https://nossoplayeronlinehd.ink/tv/redetv",
+    "categoria": "abertos"
+  },
+  {
+    "nome": "TV Cultura",
+    "imagem": "https://i.imgur.com/MgzMlav.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/cultura",
+    "categoria": "abertos"
+  },
+  {
+    "nome": "AXN",
+    "imagem": "https://i.imgur.com/VTvWPGr.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/axn",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "Comedy Central",
+    "imagem": "https://i.imgur.com/6waSO08.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/comedycentral",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "Cartoon Network",
+    "imagem": "https://i.imgur.com/jDq3Fft.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/cartoonnetwork",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "Discovery Kids",
+    "imagem": "https://i.imgur.com/bxScbaM.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/discoverykids",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "Discovery Turbo",
+    "imagem": "https://i.imgur.com/zbDvZZb.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/discoveryturbo",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "HGTV",
+    "imagem": "https://i.imgur.com/liia0so.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/hgtv",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "History",
+    "imagem": "https://i.imgur.com/IW0n7zo.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/history",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "History 2",
+    "imagem": "https://i.imgur.com/BncqDUP.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/history2",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "Megapix",
+    "imagem": "https://i.imgur.com/zkqX09S.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/megapix",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "Multishow",
+    "imagem": "https://i.imgur.com/gkHOyn9.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/multishow",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "Nickelodeon",
+    "imagem": "https://i.imgur.com/vrEMJEm.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/nickelodeon",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "TLC",
+    "imagem": "https://i.imgur.com/HJicbuu.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/tlc",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "VIVA",
+    "imagem": "https://i.imgur.com/VqEpo7Q.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/viva",
+    "categoria": "variedades"
+  },
+  {
+    "nome": "Max 1",
+    "imagem": "https://i.imgur.com/5ByWRqJ.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/max1",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Max 2",
+    "imagem": "https://i.imgur.com/5ByWRqJ.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/max2",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Max 3",
+    "imagem": "https://i.imgur.com/5ByWRqJ.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/max3",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Max 4",
+    "imagem": "https://i.imgur.com/5ByWRqJ.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/max4",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Max 5",
+    "imagem": "https://i.imgur.com/5ByWRqJ.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/max5",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Max 6",
+    "imagem": "https://i.imgur.com/5ByWRqJ.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/max6",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Disney Plus 1",
+    "imagem": "https://i.imgur.com/Ev3e9Xy.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/disneyplus1",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Disney Plus 2",
+    "imagem": "https://i.imgur.com/Ev3e9Xy.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/disneyplus2",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Disney Plus 3",
+    "imagem": "https://i.imgur.com/Ev3e9Xy.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/disneyplus3",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Disney Plus 4",
+    "imagem": "https://i.imgur.com/Ev3e9Xy.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/disneyplus4",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Disney Plus 5",
+    "imagem": "https://i.imgur.com/Ev3e9Xy.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/disneyplus5",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Disney Plus 6",
+    "imagem": "https://i.imgur.com/Ev3e9Xy.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/disneyplus6",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Paramount+",
+    "imagem": "https://i.imgur.com/kfAVlfM.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/paramountplus",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Amazon Prime Video",
+    "imagem": "https://i.imgur.com/qAWg9xI.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/primevideo",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Amazon Prime Video 2",
+    "imagem": "https://i.imgur.com/qAWg9xI.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/primevideo2",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Amazon Prime Video 3",
+    "imagem": "https://i.imgur.com/qAWg9xI.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/primevideo3",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "Amazon Prime Video 4",
+    "imagem": "https://i.imgur.com/qAWg9xI.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/primevideo4",
+    "categoria": "eventos"
+  },
+  {
+    "nome": "SportTV Portugal 1",
+    "imagem": "https://i.imgur.com/1QGfRTd.jpeg",
+    "player": "https://nossoplayeronlinehd.ink/tv/pt_sportv1",
+    "categoria": "portugal"
+  },
+  {
+    "nome": "SportTV Portugal 2",
+    "imagem": "https://i.imgur.com/WbiFFaQ.jpeg",
+    "player": "https://nossoplayeronlinehd.ink/tv/pt_sportv2",
+    "categoria": "portugal"
+  },
+  {
+    "nome": "SportTV Portugal 3",
+    "imagem": "https://i.imgur.com/1uD5Rq8.jpeg",
+    "player": "https://nossoplayeronlinehd.ink/tv/pt_sportv3",
+    "categoria": "portugal"
+  },
+  {
+    "nome": "SportTV Portugal 4",
+    "imagem": "https://i.imgur.com/Xv3fC00.jpeg",
+    "player": "https://nossoplayeronlinehd.ink/tv/pt_sportv4",
+    "categoria": "portugal"
+  },
+  {
+    "nome": "SportTV Portugal 5",
+    "imagem": "https://i.imgur.com/iFMZrEC.jpeg",
+    "player": "https://nossoplayeronlinehd.ink/tv/pt_sportv5",
+    "categoria": "portugal"
+  },
+  {
+    "nome": "Eleven Portugal 1",
+    "imagem": "https://i.imgur.com/yqi387g.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/pt_eleven1",
+    "categoria": "portugal"
+  },
+  {
+    "nome": "Eleven Portugal 2",
+    "imagem": "https://i.imgur.com/yOu50WD.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/pt_eleven2",
+    "categoria": "portugal"
+  },
+  {
+    "nome": "Eleven Portugal 3",
+    "imagem": "https://i.imgur.com/jiTAMkC.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/pt_eleven3",
+    "categoria": "portugal"
+  },
+  {
+    "nome": "Eleven Portugal 4",
+    "imagem": "https://i.imgur.com/LDKb35b.png",
+    "player": "https://nossoplayeronlinehd.ink/tv/pt_eleven4",
+    "categoria": "portugal"
+  }
+    ]
